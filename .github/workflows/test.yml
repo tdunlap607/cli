@@ -29,7 +29,7 @@ jobs:
         uses: golangci/golangci-lint-action@v2
         with:
           version: 'v1.45.2'
-          args: --timeout=30m
+          args: --config <(curl https://gist.githubusercontent.com/dopey/291bd48fb973be48fe9db94a19a42442/raw/8ffb0ea6d115ff8fb28500aacdcaf021f384d44c/golangci.yml) --timeout=30m
       -
         name: Test, Build
         id: lintTestBuild
