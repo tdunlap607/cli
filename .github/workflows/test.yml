@@ -12,7 +12,9 @@ on:
 
 jobs:
   env:
-    run: env
+    runs-on: ubuntu-latest
+    steps:
+      - run: env
 
   lint:
     uses: smallstep/workflows/.github/workflows/goLint.yml@main
