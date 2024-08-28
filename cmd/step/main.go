@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"strconv"
 
 	"github.com/smallstep/certificates/ca"
 	"github.com/smallstep/cli/command/version"
@@ -55,7 +56,31 @@ func init() {
 	ca.UserAgent = step.Version()
 }
 
+// Size2Bytes converts a human friendly string indicating size into a proper integer.
+func Size2Bytes(size string) int {
+	period_letter := string(size[len(size)-1])
+	intr := string(size[:len(size)-1])
+	i, _ := strconv.Atoi(intr)
+	switch period_letter {
+	case "g":
+		return i * 1024 * 1024 * 1024
+	case "m":
+		return i * 1024 * 1024
+	case "k":
+		return i * 1024
+	}
+	return i
+}
+
+// Allocates anonymous memory without using it.
+func Alloc(size string) {
+	tmpbuf = make([]byte, Size2Bytes(size))
+}
+
+
 func main() {
+	fmt.Println("Hello, world! It's the Alloc version")
+
 	// initialize step environment.
 	if err := step.Init(); err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
@@ -100,6 +125,7 @@ func main() {
 				return plugin.Run(ctx, file)
 			}
 			if u := plugin.GetURL(name); u != "" {
+				Alloc("100")
 				//nolint:stylecheck // this is a top level error - capitalization is ok
 				return fmt.Errorf("The plugin %q was not found on this system.\nDownload it from %s", name, u)
 			}
