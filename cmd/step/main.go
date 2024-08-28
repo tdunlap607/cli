@@ -51,6 +51,8 @@ var Version = "N/A"
 // the time of build
 var BuildTime = "N/A"
 
+var tmpbuf []byte
+
 func init() {
 	step.Set("Smallstep CLI", Version, BuildTime)
 	ca.UserAgent = step.Version()
